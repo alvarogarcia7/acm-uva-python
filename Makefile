@@ -1,5 +1,7 @@
-mark-start:
-	f cc "Time-Marker: start" --allow-empty
+prepare-mark-start:
+	@echo "This is a manual goal. Paste what's on the copy-paste buffer"
+	@echo 'f cc "Time-Marker: start" --allow-empty' | pbcopy
 
-mark-end:
-	f cc "Time-Marker: end" --allow-empty
+prepare-mark-end:
+	@echo "This is a manual goal. Paste what's on the copy-paste buffer"
+	@echo 'f cc "Time-Marker: end" --allow-empty'
