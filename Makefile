@@ -4,4 +4,4 @@ prepare-mark-start:
 
 prepare-mark-end:
 	@echo "This is a manual goal. Paste what's on the copy-paste buffer"
-	@echo 'f cc "Time-Marker: end" --allow-empty'
+	@echo 'f cc "Time-Marker: end" --allow-empty' | pbcopy
