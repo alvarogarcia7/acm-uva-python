@@ -1,4 +1,6 @@
 from pprint import pprint
+from sys import stdin
+
 
 def decide(lines: list[str]) -> dict:
     fair_coins = {chr(letter): [False, None] for letter in range(ord('A'), ord('L') + 1)}
@@ -74,11 +76,8 @@ def split_by_cases(lines: list[str]) -> list[list[str]]:
     return result
 
 
-def start(file_name):
-    lines = []
-    with open(file_name, 'r+') as file:
-        lines = file.readlines()
-    lines = [line.strip() for line in lines]
+def start(console):
+    lines = [line.strip() for line in console.readlines()]
     assert len(lines) > 0, "Lines is empty"
 
     completed = 0
@@ -97,4 +96,4 @@ def start(file_name):
 
 
 if __name__ == '__main__':
-    start('input.txt')
+    start(stdin)
