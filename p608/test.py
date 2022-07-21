@@ -43,6 +43,12 @@ ABCI EFJK down
 ADIK EFGB down""".splitlines(keepends=False))
         self.assertEqual(decide(input_), {'coin': 'A', 'status': 'light'})
 
+    def test_all_(self):
+        input_ = validate("""ABCJ EFGH up
+EFGB JACD down
+ADIK JFGB down""".splitlines(keepends=False))
+        self.assertEqual(decide(input_), {'coin': 'J', 'status': 'heavy'})
+
 
 if __name__ == '__main__':
     unittest.main()
