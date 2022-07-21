@@ -60,7 +60,7 @@ def decide(lines: list[str]) -> dict:
                     fair_coins[remaining_letter] = [True]
 
     remaining_letters = list(filter(lambda xy: not xy[1][0], fair_coins.items()))
-    assert len(remaining_letters) == 1, f"Remaining letters is not 1: {remaining_letters}"
+    assert len(remaining_letters) == 1, f"Remaining letters is not 1, but {len(remaining_letters)}: {remaining_letters}"
     result = remaining_letters[0]
     return {'coin': result[0], 'status': result[1][1]}
 
