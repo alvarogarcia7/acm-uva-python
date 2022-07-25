@@ -34,36 +34,55 @@ def decide(lines: list[str]) -> dict:
         if not value[0] and value[1] is None:
             value[0] = True
 
-    unfair_parts = []
+    # if a line is not even, the unfair coin is present
+    # all coins that are not present are fair
+    for line in filter(lambda x: not x.endswith("even"), lines):
+        letters_that_are_present = "".join(line.split(" ")[0:2])
+        for letter, value in fair_coins.items():
+            if letter not in letters_that_are_present:
+                fair_coins[letter] = [True]
+
+    parts_for_group_1 = []
+    parts_for_group_2 = []
     for line in filter(lambda x: not x.endswith("even"), lines):
         if line.endswith("up"):
-            unfair_part = 1
+            group_1 = 1
+            group_2 = 0
         else:
-            unfair_part = 0
+            group_1 = 0
+            group_2 = 1
 
-        unfair_parts.append(line.split(" ")[unfair_part])
+        assert (group_1 + group_2) == 1
 
-    all_unfair_letters = [set(f) for f in unfair_parts]
-    if len(all_unfair_letters) > 0:
-        res1 = all_unfair_letters[0]
-        for x in all_unfair_letters:
-            res1 = res1.intersection(x)
+        parts_for_group_1.append(line.split(" ")[group_1])
+        parts_for_group_2.append(line.split(" ")[group_2])
 
-        if len(res1) == 1:
-            pop = res1.pop()
-            for remaining_letter, value in fair_coins.items():
-                # there is only one unfair coin.
-                # all unfair candidates that are not present in the intersection, are fair
-                if remaining_letter == pop:
-                    continue
-                if not value[0]:
-                    fair_coins[remaining_letter] = [True]
+    # The unfair, if present, must be in all the weights that are unfair
+    all_unfair_letters = intersection_of_all(parts_for_group_1) + intersection_of_all(parts_for_group_2)
+    if len(all_unfair_letters) == 1:
+        pop = all_unfair_letters.pop()
+        for remaining_letter, value in fair_coins.items():
+            # there is only one unfair coin.
+            # all unfair candidates that are not present in the intersection, are fair
+            if remaining_letter == pop:
+                continue
+            if not value[0]:
+                fair_coins[remaining_letter] = [True]
 
     remaining_letters = list(filter(lambda xy: not xy[1][0], fair_coins.items()))
     assert len(remaining_letters) == 1, f"Remaining letters is not 1, but {len(remaining_letters)}: {remaining_letters}"
     result = remaining_letters[0]
     return {'coin': result[0], 'status': result[1][1]}
 
+
+def intersection_of_all(parts):
+    all_unfair_letters = [set(f) for f in parts]
+    result = set()
+    if len(all_unfair_letters) > 0:
+        result = all_unfair_letters[0]
+        for x in all_unfair_letters:
+            result = result.intersection(x)
+    return list(result)
 
 def split_by_cases(lines: list[str]) -> list[list[str]]:
     empty_group = []
